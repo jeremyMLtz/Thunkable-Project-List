@@ -8,13 +8,24 @@ import { Input } from "antd";
  */
 const InputField = ({ className, onSubmit, defaultValue }) => {
   const [text, setText] = useState(defaultValue ?? "");
+  const [showError, setShowError] = useState(false);
+  const handleChange = (e) => {
+    const inputValue = e.target.value;
+    if (inputValue.trim().length === 0) {
+      setShowError(true);
+    } else {
+      setShowError(false);
+    }
+    setText(inputValue);
+  };
   return (
     <Input
       className={className}
       placeholder='Name your project'
-      onChange={(e) => setText(e.target.value)}
+      onChange={(e) => handleChange(e)}
       onPressEnter={() => onSubmit(text)}
       value={text}
+      status={showError && "error"}
     />
   );
 };

@@ -29,11 +29,17 @@ function App({ className }) {
   };
 
   const handleCreateProject = (name) => {
+    if (name.trim().length === 0) {
+      return;
+    }
     dispatch(addProject(name));
     setShowAddProject(false);
   };
 
   const handleRenameProject = (newName) => {
+    if (newName.trim().length === 0) {
+      return;
+    }
     dispatch(editProject(selectedProject, newName));
     setSelectedProject(null);
   };
