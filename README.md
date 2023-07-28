@@ -1,10 +1,10 @@
-# Getting Started with Create React App
+# Thunkable Project List
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, you will need to run:
 
 ### `npm start`
 
@@ -14,57 +14,43 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+### `npm run start:server`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Runs the apps server.\
+This server has the standard CRUD APIs and can be accessed with the route:\
+[http://localhost:8080/api/projects](http://localhost:8080/api/projects)
 
-### `npm run build`
+This route handles the methods GET, POST, PUT, DELETE.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+I was able to accomplish the following features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Add a project
+2. Edit a project
+3. Delete a project
+4. Set up Redux
+5. Mobile Responsive
 
-### `npm run eject`
+The following are extra features
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Creating a baisc express server to allow real data fetching
+2. On Mobile, I changed the UI slightly to allow for the project list to be scrollable, there was an issue in the design where if I were to just let the whole page scroll, the Add Project button would overlay the edit and delete project buttons making them inaccessible, being able to scroll within the list container should hopefully solve this
+3. Truncated the project names if they're too long and display an ellipsis.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+I didn't think I would have time to finish Drag and Drop, but I probably would have included a `project.rank` property in the project object on the server, use a package like `react-dnd` (I implmented this in a few projects at my previous company), add an api route and handler for updating the rank property on drop release, and also update the server to sort the project array by rank.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Directory Structure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+`server` - contains the express server/backend
 
-## Learn More
+`src` - Contains the following:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. `assets` - storage for images
+2. `components` - All the React components for the project
+   - `svgs` - contains all the svgs
+   - `UI` - contains the smaller ui elements, InputField, ListItem, Modal, etc
+   - `layout` - contains the larger layout components made up of multiple UI components
+3. `store` - contains all the Redux code, store.js, reducers.js and actions.js
+4. `utility` - contains a helper file for requesting the server APIs
+5. `App.js` - Its the main component!
