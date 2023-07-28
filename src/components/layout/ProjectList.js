@@ -1,24 +1,57 @@
+import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import AddAProject from "./AddAProject";
 import Project from "./Project";
+import DeleteProjectModal from "../UI/DeleteProjectModal";
+import {
+  addProject,
+  editProject,
+  removeProject,
+  fetchProjects,
+} from "../../store/actions";
 
 /**
  * @param {boolean} showAddProject
- * @param {function} handleCreateProject
- * @param {function} handleRenameProject
- * @param {function} setSelectedProject
- * @param {function} setShowDeleteModal
+ * @param {function} setShowAddProject
  */
-const ProjectList = ({
-  className,
-  showAddProject,
-  handleRenameProject,
-  handleCreateProject,
-  setSelectedProject,
-  setShowDeleteModal,
-}) => {
+const ProjectList = ({ className, showAddProject, setShowAddProject }) => {
+  // All main handlers for updating projects is here that way you can use ProjectList anywhere in an app
+  // as long where ProjectList is implemented contains a button to handle showAddProject/setShowAddProject
+  // since in this design, that button exists outside of ProjectList and in the HeaderContent component
   const projects = useSelector((state) => state.projects);
+  const dispatch = useDispatch();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  useEffect(() => {
+    dispatch(fetchProjects());
+  }, [dispatch]);
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setSelectedProject(null);
+  };
+
+  const handleCreateProject = (name) => {
+    if (name.trim().length === 0) {
+      return;
+    }
+    dispatch(addProject(name));
+    setShowAddProject(false);
+  };
+
+  const handleRenameProject = (newName) => {
+    if (newName.trim().length === 0) {
+      return;
+    }
+    dispatch(editProject(selectedProject, newName));
+    setSelectedProject(null);
+  };
+
+  const handleDeleteProject = () => {
+    dispatch(removeProject(selectedProject));
+    closeDeleteModal();
+  };
   return (
     <ul className={className}>
       {showAddProject && (
@@ -36,6 +69,11 @@ const ProjectList = ({
             setSelectedProject={setSelectedProject}
           />
         ))}
+      <DeleteProjectModal
+        open={showDeleteModal}
+        onOk={handleDeleteProject}
+        onCancel={closeDeleteModal}
+      />
     </ul>
   );
 };

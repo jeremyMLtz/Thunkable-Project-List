@@ -1,53 +1,12 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { Layout } from "antd";
 import HeaderContent from "./components/layout/HeaderContent";
 import ProjectList from "./components/layout/ProjectList";
 import styled from "@emotion/styled";
-import DeleteProjectModal from "./components/UI/DeleteProjectModal";
-import {
-  addProject,
-  editProject,
-  removeProject,
-  fetchProjects,
-} from "./store/actions";
 const { Header, Content } = Layout;
 
 function App({ className }) {
-  const dispatch = useDispatch();
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showAddProject, setShowAddProject] = useState(false);
-
-  useEffect(() => {
-    dispatch(fetchProjects());
-  }, [dispatch]);
-
-  const closeDeleteModal = () => {
-    setShowDeleteModal(false);
-    setSelectedProject(null);
-  };
-
-  const handleCreateProject = (name) => {
-    if (name.trim().length === 0) {
-      return;
-    }
-    dispatch(addProject(name));
-    setShowAddProject(false);
-  };
-
-  const handleRenameProject = (newName) => {
-    if (newName.trim().length === 0) {
-      return;
-    }
-    dispatch(editProject(selectedProject, newName));
-    setSelectedProject(null);
-  };
-
-  const handleDeleteProject = () => {
-    dispatch(removeProject(selectedProject));
-    closeDeleteModal();
-  };
   return (
     <Layout className={className}>
       <Header>
@@ -56,17 +15,9 @@ function App({ className }) {
       <Content>
         <ProjectList
           showAddProject={showAddProject}
-          handleCreateProject={handleCreateProject}
-          handleRenameProject={handleRenameProject}
-          setSelectedProject={setSelectedProject}
-          setShowDeleteModal={() => setShowDeleteModal(true)}
+          setShowAddProject={setShowAddProject}
         />
       </Content>
-      <DeleteProjectModal
-        open={showDeleteModal}
-        onOk={handleDeleteProject}
-        onCancel={closeDeleteModal}
-      />
     </Layout>
   );
 }
